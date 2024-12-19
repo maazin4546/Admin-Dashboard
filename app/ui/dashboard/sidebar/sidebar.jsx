@@ -1,4 +1,6 @@
-import React from 'react'
+import Image from "next/image";
+import MenuLink from "./menuLink/menuLink";
+import styles from "./sidebar.module.css";
 import {
   MdDashboard,
   MdSupervisedUserCircle,
@@ -11,9 +13,7 @@ import {
   MdHelpCenter,
   MdLogout,
 } from "react-icons/md";
-import styles from "./sidebar.module.css"
-import MenuLink from './menuLink/menuLink';
-import Image from 'next/image';
+import { auth, signOut } from "@/app/auth";
 
 const menuItems = [
   {
@@ -78,7 +78,8 @@ const menuItems = [
   },
 ];
 
-const Sidebar = () => {
+const Sidebar = async () => {
+  // const { user } = await auth();
   return (
     <div className={styles.container}>
       <div className={styles.user}>
@@ -91,6 +92,7 @@ const Sidebar = () => {
           height="50"
         />
         <div className={styles.userDetail}>
+          {/* <span className={styles.username}>{user.username}</span> */}
           <span className={styles.username}>Mazin</span>
           <span className={styles.userTitle}>Administrator</span>
         </div>
@@ -105,8 +107,19 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
+      <form
+        action={async () => {
+          "use server";
+          await signOut();
+        }}
+      >
+        <button className={styles.logout}>
+          <MdLogout />
+          Logout
+        </button>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
